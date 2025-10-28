@@ -1,0 +1,262 @@
+# Indicators Calculator Configuration
+server:
+  port: 8082
+  servlet:
+    context-path: /indicators-calculator
+
+spring:
+  application:
+    name: indicators-calculator
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/velox_indicators?useSSL=false&serverTimezone=UTC
+    username: velox_user
+    password: velox_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+        jdbc.batch_versioned_data: true
+        connection:
+          provider_disables_autocommit: true
+          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_STATEMENT
+        type:
+          included_standard_types: false
+        jdbc:
+          time_zone: UTC
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      # Indicator values producer configuration
+      acks: all
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      linger-ms: 5
+      compression-type: lz4
+      max-in-flight-requests-per-connection: 5
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: indicators-calculator-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.velox.indicators.model,com.velox.marketdata.model
+    listener:
+      ack-mode: manual_immediate
+      concurrency: 4
+
+  # Redis Configuration for caching
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+      key-ttl: 300s
+      cache-null-values: false
+
+# Indicators Calculator Specific Configuration
+indicators:
+  # Calculation configuration
+  calculation:
+    timeout:
+      ms: 50
+    max:
+      symbols: 1000
+    thread:
+      pool:
+        size: 8
+        queue:
+          capacity: 100
+  
+  # Cache configuration
+  cache:
+    ttl:
+      seconds: 300
+    max:
+      entries: 10000
+    cleanup:
+      interval:
+        seconds: 300
+  
+  # Default indicator periods
+  periods:
+    sma:
+      short: 5
+      medium: 20
+      long: 50
+    ema:
+      short: 12
+      medium: 20
+      long: 50
+    rsi:
+      short: 9
+      medium: 14
+      long: 21
+    macd:
+      fast: 12
+      slow: 26
+      signal: 9
+    bollinger:
+      period: 20
+      std:
+        dev: 2
+    atr:
+      period: 14
+    stochastic:
+      k: 14
+      d: 3
+  
+  # Performance optimization
+  performance:
+    batch:
+      size: 100
+    parallel:
+      calculations: true
+    cache:
+      enabled: true
+    pre:
+      calculation: true
+
+# Logging Configuration
+logging:
+  level:
+    com.velox.indicators: INFO
+    org.springframework.kafka: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.springframework.data.redis: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/indicators-calculator.log
+    max-size: 100MB
+    max-history: 30
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Performance Tuning
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 16
+        queue-capacity: 100
+        thread-name-prefix: indicators-executor
+    scheduling:
+      pool:
+        size: 4
+        thread-name-prefix: indicators-scheduler
+
+# Profile-specific configurations
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/velox_indicators_dev?useSSL=false&serverTimezone=UTC
+  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    com.velox.indicators: DEBUG
+    org.springframework.kafka: INFO
+    org.springframework.data.redis: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  
+  datasource:
+    url: jdbc:postgresql://velox-db:5432/velox_indicators?useSSL=true&serverTimezone=UTC
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.velox.indicators: INFO
+    org.springframework.kafka: WARN
+    org.springframework.data.redis: WARN
+  file:
+    name: /var/log/velox/indicators-calculator.log
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+logging:
+  level:
+    com.velox.indicators: DEBUG
+    org.springframework.kafka: DEBUG
+    org.springframework.data.redis: DEBUG

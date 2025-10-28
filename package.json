@@ -1,0 +1,61 @@
+{
+  "name": "velox-algotrading",
+  "version": "1.0.0",
+  "description": "Multi-user algotrading system with Java microservices for high-performance components",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api-gateway\" \"npm run dev:frontend\"",
+    "dev:api-gateway": "cd api-gateway && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "npm run build:api-gateway && npm run build:frontend",
+    "build:api-gateway": "cd api-gateway && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:api-gateway && npm run test:frontend",
+    "test:api-gateway": "cd api-gateway && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "lint": "npm run lint:api-gateway && npm run lint:frontend",
+    "lint:api-gateway": "cd api-gateway && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "setup": "npm run setup:api-gateway && npm run setup:frontend && npm run setup:java",
+    "setup:api-gateway": "cd api-gateway && npm install",
+    "setup:frontend": "cd frontend && npm install",
+    "setup:java": "cd java-services && ./mvnw clean install",
+    "start:java:market-data": "cd java-services/market-data-processor && ./mvnw spring-boot:run",
+    "start:java:indicators": "cd java-services/indicators-calculator && ./mvnw spring-boot:run",
+    "start:java:risk": "cd java-services/risk-management && ./mvnw spring-boot:run",
+    "start:java:all": "concurrently \"npm run start:java:market-data\" \"npm run start:java:indicators\" \"npm run start:java:risk\""
+  },
+  "keywords": [
+    "algotrading",
+    "java",
+    "spring-boot",
+    "react",
+    "typescript",
+    "kafka",
+    "postgresql",
+    "timescaledb",
+    "microservices"
+  ],
+  "author": "Velox Algotrading Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/velox-algotrading/velox-algotrading.git"
+  },
+  "bugs": {
+    "url": "https://github.com/velox-algotrading/velox-algotrading/issues"
+  },
+  "homepage": "https://github.com/velox-algotrading/velox-algotrading#readme"
+}

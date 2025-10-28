@@ -44,7 +44,7 @@ Establish the technical foundation with project structure, database setup, and d
 - Java 21 development environment ready for team
 - Git repository with proper branching
 - Configuration templates (`.env.example`, `docker-compose.yml`)
-- Code quality tools configured for Java development
+- Code quality tools configured for Java
 - Maven/Gradle build system configured
 
 **Acceptance Criteria**:
@@ -84,8 +84,8 @@ Establish the technical foundation with project structure, database setup, and d
 - All tables are created with proper relationships
 - Indexes are properly configured for performance
 - Connection pooling is working efficiently with Java
-- Sample data can be inserted and queried
 - JPA/Hibernate is configured and functional
+- Sample data can be inserted and queried
 
 ---
 
@@ -102,6 +102,7 @@ Establish the technical foundation with project structure, database setup, and d
 - [ ] Implement service layer architecture
 - [ ] Set up repository pattern for data access
 - [ ] Configure logging and monitoring
+- [ ] Set up Spring Boot Actuator
 
 **Deliverables**:
 - Spring Boot project structure
@@ -111,6 +112,7 @@ Establish the technical foundation with project structure, database setup, and d
 - Service layer architecture
 - Repository pattern implementation
 - Logging and monitoring configuration
+- Spring Boot Actuator configuration
 
 **Acceptance Criteria**:
 - Spring Boot application starts successfully
@@ -119,6 +121,7 @@ Establish the technical foundation with project structure, database setup, and d
 - Service layer is properly separated
 - Repository pattern is implemented
 - Logging is configured and functional
+- Actuator endpoints are accessible
 
 ---
 
@@ -152,6 +155,7 @@ Implement user authentication, authorization system, and basic REST API endpoint
 - Session management
 - Role-based authorization middleware
 - Spring Security configuration
+- Security best practices implementation
 
 **Acceptance Criteria**:
 - Users can register and login successfully
@@ -195,6 +199,7 @@ Implement user authentication, authorization system, and basic REST API endpoint
 - API documentation is complete and accurate
 - Security middleware is properly configured
 - Request logging is working
+- CORS is configured for frontend
 - Actuator endpoints are functional
 
 ---
@@ -237,7 +242,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - State management is properly set up
 - Authentication flow is working
 - API client can communicate with backend
-- Basic components are functional
+- Basic UI components are functional
 - WebSocket client can connect to real-time data
 
 ---
@@ -361,4 +366,4 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - Environment configurations documented
 - Basic deployment procedures established
 
-Phase 1 establishes a solid foundation required for building a sophisticated, scalable, and feature-rich algotrading system with Java microservices for optimal performance.
+Phase 1 establishes the solid foundation required for building a sophisticated, scalable, and feature-rich algotrading system with Java microservices for optimal performance.

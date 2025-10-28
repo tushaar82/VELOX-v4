@@ -1,0 +1,246 @@
+# Market Data Processor Configuration
+server:
+  port: 8081
+  servlet:
+    context-path: /market-data-processor
+
+spring:
+  application:
+    name: market-data-processor
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/velox_marketdata?useSSL=false&serverTimezone=UTC
+    username: velox_user
+    password: velox_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+        jdbc.batch_versioned_data: true
+        connection:
+          provider_disables_autocommit: true
+          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_STATEMENT
+        type:
+          included_standard_types: false
+        jdbc:
+          fetch_size: 1000
+        default_batch_fetch_size: 100
+        jdbc:
+          time_zone: UTC
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      # Market data producer configuration
+      acks: all
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      linger-ms: 5
+      compression-type: lz4
+      max-in-flight-requests-per-connection: 5
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: market-data-processor-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.velox.marketdata.model
+    listener:
+      ack-mode: manual_immediate
+      concurrency: 4
+
+# Market Data Processor Specific Configuration
+marketdata:
+  # Tick processing configuration
+  tick:
+    batch:
+      size: 100
+    batch:
+      timeout:
+        ms: 1000
+    max:
+      age:
+        hours: 24
+  
+  # Candle building configuration
+  candle:
+    batch:
+      size: 50
+    flush:
+      interval:
+        ms: 5000
+  
+  # Default symbols and exchanges
+  symbols:
+    default: NIFTY-50,BANKNIFTY-50,RELIANCE-EQ,TCS-EQ,INFY-EQ
+  exchanges:
+    default: NSE
+
+# SMART API Configuration
+smart:
+  api:
+    # WebSocket configuration
+    websocket:
+      url: wss://smartapi.angelbroking.com/feed
+      max-text-message-buffer-size: 65536
+      max-binary-message-buffer-size: 65536
+      async-send-timeout: 5000
+      max-session-idle-timeout: 300000
+      connection-timeout: 5000
+      reconnect-interval: 1000
+      max-reconnect-attempts: 10
+      heartbeat-interval: 30000
+      heartbeat-timeout: 10000
+    
+    # Authentication
+    jwt:
+      token: ${SMART_API_JWT_TOKEN:}
+    client:
+      code: ${SMART_API_CLIENT_CODE:}
+    feed:
+      token: ${SMART_API_FEED_TOKEN:}
+
+# Logging Configuration
+logging:
+  level:
+    com.velox.marketdata: INFO
+    org.springframework.kafka: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/market-data-processor.log
+    max-size: 100MB
+    max-history: 30
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Performance Tuning
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 16
+        queue-capacity: 100
+        thread-name-prefix: market-data-executor
+    scheduling:
+      pool:
+        size: 4
+        thread-name-prefix: market-data-scheduler
+
+# Cache Configuration (if using Redis)
+# spring:
+#   cache:
+#     type: redis
+#     redis:
+#       time-to-live: 600000
+#       cache-null-values: false
+#   redis:
+#     host: localhost
+#     port: 6379
+#     timeout: 2000ms
+#     lettuce:
+#       pool:
+#         max-active: 8
+#         max-idle: 8
+#         min-idle: 0
+
+# Profile-specific configurations
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/velox_marketdata_dev?useSSL=false&serverTimezone=UTC
+  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    com.velox.marketdata: DEBUG
+    org.springframework.kafka: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  
+  datasource:
+    url: jdbc:postgresql://velox-db:5432/velox_marketdata?useSSL=true&serverTimezone=UTC
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.velox.marketdata: INFO
+    org.springframework.kafka: WARN
+  file:
+    name: /var/log/velox/market-data-processor.log
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    com.velox.marketdata: DEBUG
+    org.springframework.kafka: DEBUG
