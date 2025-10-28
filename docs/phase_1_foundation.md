@@ -2,7 +2,7 @@
 
 ## Phase Overview
 
-Phase 1 establishes the core infrastructure and basic functionality for the Velox algotrading system. This phase focuses on setting up the development environment, database, authentication, and basic frontend structure, along with the FastAPI gateway for existing components.
+Phase 1 establishes the core infrastructure and basic functionality for the Velox algotrading system. This phase focuses on setting up the development environment, database, authentication, and basic frontend structure, along with Java microservices foundation and Kafka for high-throughput messaging.
 
 ## Duration: 3 Weeks
 
@@ -12,8 +12,9 @@ Phase 1 establishes the core infrastructure and basic functionality for the Velo
 - Establish database schema and migrations
 - Implement user authentication and authorization
 - Create basic frontend structure
-- Set up FastAPI gateway for existing components
-- Establish project foundation for subsequent phases
+- Set up Java microservices foundation
+- Establish Kafka cluster for messaging
+- Create project foundation for subsequent phases
 
 ---
 
@@ -31,24 +32,27 @@ Establish the technical foundation with project structure, database setup, and d
 
 **Subtasks**:
 - [ ] Create project repository with proper structure
-- [ ] Set up development environment
+- [ ] Set up Java 21 development environment
 - [ ] Configure IDE and development tools
 - [ ] Set up Git workflow and branching strategy
 - [ ] Create environment configuration files
-- [ ] Set up code quality tools
+- [ ] Set up code quality tools for Java
+- [ ] Configure Maven/Gradle build system
 
 **Deliverables**:
 - Complete project structure as defined in `project_structure.md`
-- Development environment ready for team
-- Configuration templates (`.env.example`, `docker-compose.yml`)
+- Java 21 development environment ready for team
 - Git repository with proper branching
-- Code quality tools configured
+- Configuration templates (`.env.example`, `docker-compose.yml`)
+- Code quality tools configured for Java development
+- Maven/Gradle build system configured
 
 **Acceptance Criteria**:
-- All team members can set up development environment
+- All team members can set up Java development environment
 - Project structure matches architectural specifications
 - Configuration files are properly documented
 - Code quality tools are configured and working
+- Build system is functional and optimized
 
 ---
 
@@ -59,70 +63,73 @@ Establish the technical foundation with project structure, database setup, and d
 
 **Subtasks**:
 - [ ] Install and configure PostgreSQL with TimescaleDB
-- [ ] Set up database connection and pooling
+- [ ] Set up database connection and pooling for Java
 - [ ] Create database migration scripts
 - [ ] Set up database initialization scripts
 - [ ] Configure database indexes and constraints
 - [ ] Test database performance with sample data
+- [ ] Set up JPA/Hibernate for Java database access
 
 **Deliverables**:
 - PostgreSQL database with TimescaleDB extension
 - Complete database schema
 - Migration scripts for database setup
-- Database connection configuration
+- Database connection configuration for Java
 - Performance-optimized schema
-- Seed data for testing
+- JPA/Hibernate configuration
+- Sample data for testing
 
 **Acceptance Criteria**:
 - Database can be created and migrated successfully
 - All tables are created with proper relationships
 - Indexes are properly configured for performance
-- Connection pooling is working efficiently
+- Connection pooling is working efficiently with Java
 - Sample data can be inserted and queried
+- JPA/Hibernate is configured and functional
 
 ---
 
-#### Task 1.3: FastAPI Gateway Setup
+#### Task 1.3: Java Microservices Foundation
 **Duration**: 2 days  
 **Priority**: High  
 **Dependencies**: Task 1.1
 
 **Subtasks**:
-- [ ] Set up FastAPI project structure
-- [ ] Configure FastAPI application
-- [ ] Set up request/response models
-- [ ] Implement error handling middleware
-- [ ] Create API documentation with Swagger
-- [ ] Set up CORS and security middleware
-- [ ] Configure request logging and monitoring
+- [ ] Set up Spring Boot project structure
+- [ ] Configure Spring Boot application properties
+- [ ] Set up dependency injection with Spring
+- [ ] Create basic REST controllers
+- [ ] Implement service layer architecture
+- [ ] Set up repository pattern for data access
+- [ ] Configure logging and monitoring
 
 **Deliverables**:
-- FastAPI application with proper structure
-- Organized API routers
-- Complete request/response models
-- Error handling and logging
-- API documentation
-- Security middleware
-- Request logging and monitoring
+- Spring Boot project structure
+- Application configuration
+- Dependency injection setup
+- Basic REST controllers
+- Service layer architecture
+- Repository pattern implementation
+- Logging and monitoring configuration
 
 **Acceptance Criteria**:
-- API structure follows best practices
-- Error handling is comprehensive
-- API documentation is complete and accurate
-- Security middleware is properly configured
-- Request logging is working
-- CORS is configured for frontend
+- Spring Boot application starts successfully
+- Dependency injection is working properly
+- REST controllers respond to requests
+- Service layer is properly separated
+- Repository pattern is implemented
+- Logging is configured and functional
 
 ---
 
 ## Week 2: Authentication & Basic API
 
 ### Week 2 Goal
-Implement user authentication, authorization system, and basic REST API endpoints.
+Implement user authentication, authorization system, and basic REST API endpoints with Java microservices.
 
 ### Tasks
 
-#### Task 2.1: User Authentication System
+#### Task 2.1: Java User Authentication System
 **Duration**: 3 days  
 **Priority**: High  
 **Dependencies**: Task 1.2
@@ -135,6 +142,7 @@ Implement user authentication, authorization system, and basic REST API endpoint
 - [ ] Create role-based access control
 - [ ] Implement token refresh mechanism
 - [ ] Add rate limiting for auth endpoints
+- [ ] Configure Spring Security
 
 **Deliverables**:
 - Complete authentication system
@@ -143,40 +151,43 @@ Implement user authentication, authorization system, and basic REST API endpoint
 - Password security implementation
 - Session management
 - Role-based authorization middleware
-- Security best practices implementation
+- Spring Security configuration
 
 **Acceptance Criteria**:
 - Users can register and login successfully
 - JWT tokens are generated and validated correctly
 - Role-based access control is working
-- Session management is secure
+- Session management is secure and functional
 - Rate limiting prevents abuse
 - Password security is implemented
+- Spring Security is properly configured
 
 ---
 
-#### Task 2.2: Basic API Structure
+#### Task 2.2: Java Basic API Structure
 **Duration**: 2 days  
 **Priority**: High  
 **Dependencies**: Task 2.1
 
 **Subtasks**:
-- [ ] Set up FastAPI application structure
+- [ ] Set up Spring Boot application structure
 - [ ] Create API router organization
 - [ ] Implement request/response models
 - [ ] Set up error handling middleware
 - [ ] Create API documentation with Swagger
 - [ ] Implement CORS and security middleware
 - [ ] Set up request logging and monitoring
+- [ ] Configure Spring Boot Actuator
 
 **Deliverables**:
-- FastAPI application with proper structure
+- Spring Boot application with proper structure
 - Organized API routers
 - Complete request/response models
 - Error handling and logging
 - API documentation
 - Security middleware
 - Request logging and monitoring
+- Spring Boot Actuator configuration
 
 **Acceptance Criteria**:
 - API structure follows best practices
@@ -184,7 +195,7 @@ Implement user authentication, authorization system, and basic REST API endpoint
 - API documentation is complete and accurate
 - Security middleware is properly configured
 - Request logging is working
-- CORS is configured for frontend
+- Actuator endpoints are functional
 
 ---
 
@@ -203,11 +214,12 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 **Subtasks**:
 - [ ] Create React application with TypeScript
 - [ ] Set up project structure and routing
-- [ ] Configure state management (Redux Toolkit)
+- [ ] Configure state management (Redux)
 - [ ] Create authentication components
 - [ ] Set up API client with axios
 - [ ] Implement basic UI components
 - [ ] Configure build and development scripts
+- [ ] Set up WebSocket client for real-time data
 
 **Deliverables**:
 - React application with TypeScript
@@ -217,6 +229,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - API client setup
 - Basic component library
 - Build and development scripts
+- WebSocket client for real-time data
 
 **Acceptance Criteria**:
 - React application builds and runs successfully
@@ -224,7 +237,8 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - State management is properly set up
 - Authentication flow is working
 - API client can communicate with backend
-- Basic UI components are functional
+- Basic components are functional
+- WebSocket client can connect to real-time data
 
 ---
 
@@ -241,6 +255,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - [ ] Set up Kafka monitoring and metrics
 - [ ] Test Kafka cluster performance
 - [ ] Create Docker compose files for Kafka
+- [ ] Configure Java Kafka producers and consumers
 
 **Deliverables**:
 - 3-node Kafka cluster with ZooKeeper
@@ -248,6 +263,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - Kafka monitoring setup
 - Docker compose configuration
 - Performance benchmarks
+- Java Kafka producers and consumers
 
 **Acceptance Criteria**:
 - Kafka cluster is running and stable
@@ -255,6 +271,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - Producers and consumers can connect successfully
 - Monitoring shows cluster health
 - Performance meets targets (>1M messages/second)
+- Java applications can publish and consume messages
 
 ---
 
@@ -264,13 +281,13 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - ✅ Complete development environment
 - ✅ PostgreSQL database with TimescaleDB
 - ✅ Kafka cluster with 6 core topics
-- ✅ FastAPI gateway for existing components
+- ✅ Java microservices foundation
 - ✅ React frontend foundation
 
 ### Code Components
 - ✅ Database models and migrations
 - ✅ JWT authentication system
-- ✅ FastAPI application structure
+- ✅ Spring Boot application structure
 - ✅ React application with TypeScript
 - ✅ Kafka producer/consumer managers
 
@@ -289,18 +306,21 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - [ ] Basic API endpoints are functional and documented
 - [ ] Frontend can communicate with backend
 - [ ] Kafka cluster can handle high-throughput messaging
+- [ ] Java microservices foundation is established
 
 ### Performance Requirements
 - [ ] Database queries complete within acceptable time limits
 - [ ] Kafka cluster processes >1M messages/second
 - [ ] API response times are under 200ms
 - [ ] Frontend loads and renders efficiently
+- [ ] Java applications start and run properly
 
 ### Quality Requirements
 - [ ] Code follows established patterns and standards
 - [ ] Security best practices are implemented
 - [ ] Error handling is comprehensive
 - [ ] Documentation is complete and accurate
+- [ ] Java code follows best practices and conventions
 
 ## Risks and Mitigations
 
@@ -311,8 +331,8 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 2. **Kafka Configuration**: Complex setup may cause delays
    - **Mitigation**: Use Docker compose, detailed configuration guides
    
-3. **Authentication Security**: JWT implementation may have vulnerabilities
-   - **Mitigation**: Follow security best practices, regular security reviews
+3. **Java Development**: New framework may slow initial development
+   - **Mitigation**: Training sessions, documentation, code reviews
 
 ### Timeline Risks
 1. **Environment Setup**: Team members may face setup issues
@@ -328,6 +348,7 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - API documentation for all endpoints
 - Database schema documentation
 - Kafka configuration guide
+- Java development best practices guide
 
 ### Code Repository
 - All code committed to version control
@@ -340,4 +361,4 @@ Create the frontend foundation and set up Kafka messaging for real-time data pro
 - Environment configurations documented
 - Basic deployment procedures established
 
-Phase 1 establishes the solid foundation required for building a sophisticated algotrading system with Java microservices for high-performance components.
+Phase 1 establishes a solid foundation required for building a sophisticated, scalable, and feature-rich algotrading system with Java microservices for optimal performance.
