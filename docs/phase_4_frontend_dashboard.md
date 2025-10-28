@@ -14,6 +14,8 @@ Phase 4 focuses on developing the user interface, trading dashboard, analytics, 
 - Set up live/dry run mode switching
 - Establish WebSocket connections for real-time data streaming
 
+---
+
 ## Week 9: Trading Dashboard Foundation
 
 ### Week 9 Goal
@@ -27,7 +29,6 @@ Create the core trading dashboard with real-time market data, order management, 
 **Dependencies**: Phase 1 completion
 
 **Subtasks**:
-- [ ] Set up React development environment
 - [ ] Create responsive dashboard layout
 - [ ] Implement navigation and routing
 - [ ] Set up state management for dashboard
@@ -51,6 +52,8 @@ Create the core trading dashboard with real-time market data, order management, 
 - Components are reusable and consistent
 - Theme system supports light/dark modes
 - User preferences are saved and applied
+
+---
 
 #### Task 9.2: Real-Time Market Data Display
 **Duration**: 3 days  
@@ -81,6 +84,8 @@ Create the core trading dashboard with real-time market data, order management, 
 - Market depth shows current order book
 - Watchlist supports multiple symbols
 - Chart tools are functional and intuitive
+
+---
 
 ## Week 10: Order Management & Analytics
 
@@ -120,8 +125,10 @@ Implement order management interface and comprehensive analytics features.
 - Bracket orders are supported and functional
 - Order templates save time and reduce errors
 
+---
+
 #### Task 10.2: Analytics and Reporting
-**Duration**: 3 days  
+**Duration**: 2 days  
 **Priority**: High  
 **Dependencies**: Task 10.1
 
@@ -150,6 +157,8 @@ Implement order management interface and comprehensive analytics features.
 - Strategy performance is tracked and comparable
 - Reports can be exported in PDF/Excel formats
 - Custom reports can be saved and scheduled
+
+---
 
 ## Week 11: User Views & Mode Switching
 
@@ -189,6 +198,8 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - Investor reports are relevant and insightful
 - Multi-tenant support isolates user data
 
+---
+
 #### Task 11.2: Live/Dry Run Mode Switching
 **Duration**: 3 days  
 **Priority**: High  
@@ -202,6 +213,7 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - [ ] Create mode transition procedures
 - [ ] Set up mode-based risk limits
 - [ ] Implement mode audit logging
+- [ ] Create mode confirmation dialogs
 
 **Deliverables**:
 - Mode switching interface and logic
@@ -211,6 +223,7 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - Safe mode transition procedures
 - Mode-based risk management
 - Mode audit logging
+- Mode confirmation dialogs
 
 **Acceptance Criteria**:
 - Mode switching is instant and clear
@@ -219,6 +232,8 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - Mode transitions are safe and reversible
 - Risk limits adjust appropriately for mode
 - All mode changes are logged for audit
+
+---
 
 ## Phase 4 Deliverables Summary
 
@@ -234,8 +249,8 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - ✅ WebSocket connections for live updates
 - ✅ Real-time chart updates and indicators
 - ✅ Live order status and position tracking
-- ✅ Instant mode switching and notifications
 - ✅ Real-time P&L and portfolio updates
+- ✅ Instant mode switching and notifications
 
 ### User Experience
 - ✅ Responsive design for all devices
@@ -248,9 +263,8 @@ Implement investor view, role-based access control, and live/dry run mode switch
 
 ### Functional Requirements
 - [ ] Trading dashboard provides complete trading functionality
-- [ ] Real-time data is displayed and updated
-- [ ] Orders can be placed, modified, and cancelled
-- [ ] Positions are synchronized and tracked
+- [ ] Real-time data updates are smooth and accurate
+- [ ] Order management supports all order types and modifications
 - [ ] Analytics provide actionable insights
 - [ ] Investor view is secure and informative
 - [ ] Mode switching is safe and immediate
@@ -265,10 +279,9 @@ Implement investor view, role-based access control, and live/dry run mode switch
 ### Quality Requirements
 - [ ] UI is responsive and accessible
 - [ ] Real-time data is accurate and consistent
-- [ ] Error handling prevents system failures
-- [ ] Monitoring provides visibility into performance
-- [ ] Code follows established patterns and best practices
-- [ ] Documentation is complete and accurate
+- [ ] Error handling is comprehensive and user-friendly
+- [ ] Security controls are properly enforced
+- [ ] User experience is intuitive and efficient
 
 ## Risks and Mitigations
 
@@ -278,6 +291,9 @@ Implement investor view, role-based access control, and live/dry run mode switch
 
 2. **Real-Time Data Consistency**: Frontend may show inconsistent data
    - **Mitigation**: Proper state management, data validation, conflict resolution
+
+3. **Browser Compatibility**: Different browsers may behave differently
+   - **Mitigation**: Cross-browser testing, polyfills, progressive enhancement
 
 ### User Experience Risks
 1. **Information Overload**: Too much data may overwhelm users
@@ -289,9 +305,9 @@ Implement investor view, role-based access control, and live/dry run mode switch
 ## Phase 4 Handoff
 
 ### Documentation
-- Complete API documentation for all components
 - User manual for trading dashboard
-- Analytics and reporting guide
+- Investor view guide
+- Analytics and reporting documentation
 - Troubleshooting guide for common issues
 
 ### Testing
@@ -299,13 +315,11 @@ Implement investor view, role-based access control, and live/dry run mode switch
 - Performance testing under load
 - Usability testing with target users
 - Security testing for role-based access
-- End-to-end trading workflow tests
 
 ### Deployment
 - Frontend build and optimization
 - CDN configuration for static assets
 - SSL certificate setup
-- Monitoring and alerting setup
-- Backup and recovery procedures
+- Performance monitoring integration
 
 Phase 4 delivers a professional, user-friendly interface that provides complete trading capabilities with real-time updates and comprehensive analytics.
